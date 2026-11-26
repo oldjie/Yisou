@@ -43,16 +43,15 @@
   <img src="docs/home-yisou-0.6.0.png" alt="一搜首页" width="29%">
   <img src="docs/more-yisou-0.8.0.png" alt="全部十一项搜索平台" width="29%">
   <img src="docs/settings-dark-yisou-0.7.0.png" alt="深色设置界面" width="29%">
-  <p><sub>首页 · 平台选择 · 深色外观（历史版本截图）</sub></p>
+  <p><sub>首页 · 平台选择 · 深色外观</sub></p>
 </div>
 
 ### 桌面快捷搜索
 
 <div align="center">
-  <img src="docs/widget-preview.png" alt="桌面搜索组件效果示意" width="70%">
-  <br>
-  <img src="docs/quick-search-preview.png" alt="快捷搜索窗口效果示意" width="58%">
-  <p><sub>桌面组件 · 快捷搜索窗口（示意图，非实机截图）</sub></p>
+  <img src="docs/widget-preview.png" alt="桌面搜索组件效果示意" width="40%">
+  <img src="docs/quick-search-preview.png" alt="快捷搜索窗口效果示意" width="34%">
+  <p><sub>桌面组件 · 快捷搜索窗口</sub></p>
 </div>
 
 ## 安装与使用

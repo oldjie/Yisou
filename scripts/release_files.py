@@ -9,15 +9,11 @@ ROOT_FILES = (
     'gradle/wrapper/gradle-wrapper.properties', 'gradle/wrapper/gradle-wrapper.jar',
     'gradle/LICENSE-APACHE-2.0.txt', 'docs/RESEARCH.md', 'docs/TESTING.md',
     'docs/SECURITY_REVIEW.md', 'docs/WIDGETS.md',
-    # Reviewed empty-home screenshots and a synthetic calibration fixture only.
-    'docs/home-yisou-0.3.0.png', 'docs/calibration-0.3.1.png',
-    'docs/home-yisou-0.3.3.png',
-    'docs/home-yisou-0.3.5.png', 'docs/icon-yisou-0.3.5.png',
-    'docs/home-yisou-0.3.6.png', 'docs/icon-yisou-0.3.6.png',
-    'docs/home-yisou-0.3.7.png',
-    'docs/widgets-yisou-0.4.0.png',
-    'docs/home-yisou-0.5.0.png', 'docs/settings-yisou-0.5.0.png',
-    'docs/widget-yisou-0.5.0.png', 'docs/widget-yisou-0.5.0-scrolled.png',
+    # Current README illustrations and screenshots referenced by documentation.
+
+    'docs/icon-yisou-0.3.6.png',
+
+    'docs/widget-preview.png', 'docs/quick-search-preview.png',
     'app/src/main/res/drawable-nodpi/platform_douban.png',
     'app/src/main/res/drawable-nodpi/platform_taobao.png',
     'app/src/main/res/drawable-nodpi/platform_xianyu.png',
@@ -30,18 +26,16 @@ ROOT_FILES = (
     'app/src/main/res/drawable-nodpi/platform_amap.png',
     'app/src/main/res/drawable-nodpi/platform_taobao_shangou.png',
     'docs/PLATFORM_ICONS.md',
-    'docs/settings-light-yisou-0.7.0.png',
+
     'docs/settings-dark-yisou-0.7.0.png',
     'docs/widget-input-dark-yisou-0.7.0.png',
     'docs/more-yisou-0.8.0.png',
     'docs/widget-yisou-0.8.0-scrolled.png',
-    'docs/widget-middle-yisou-0.8.1.png',
+
     'docs/widget-middle-yisou-0.8.2.png',
-    'docs/settings-yisou-0.6.1.png',
-    'docs/more-yisou-0.6.1.png',
+
     'docs/home-yisou-0.6.0.png',
-    'docs/more-yisou-0.6.0.png',
-    'docs/order-yisou-0.6.0.png',
+
     'docs/widget-input-yisou-0.6.0.png',
     'docs/widget-yisou-0.6.0.png',
     'docs/widget-yisou-0.6.0-scrolled.png',

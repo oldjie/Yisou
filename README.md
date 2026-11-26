@@ -3,14 +3,14 @@
   <h1>一搜 · NoFeed Android</h1>
   <p>一款开源的 Android 主动搜索工具 — 直达搜索，远离推荐信息流。</p>
   <p>
-    <a href="https://github.com/oldjie/yisou/releases/latest">下载安装</a> ·
+    <a href="https://github.com/oldjie/yisou/releases">下载安装</a> ·
     <a href="#功能特性">功能特性</a> ·
     <a href="#界面预览">界面预览</a> ·
     <a href="#安装与使用">使用说明</a> ·
     <a href="PRIVACY.md">隐私政策</a>
   </p>
   <p>
-    <a href="https://github.com/oldjie/yisou/releases/latest"><img alt="最新版本" src="https://img.shields.io/github/v/release/oldjie/yisou?label=Release&color=586e62"></a>
+    <a href="https://github.com/oldjie/yisou/releases"><img alt="最新预览版本" src="https://img.shields.io/github/v/release/oldjie/yisou?include_prereleases&label=Release&color=586e62"></a>
     <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-586e62">
     <a href="LICENSE"><img alt="AGPL-3.0-only" src="https://img.shields.io/badge/License-AGPL--3.0--only-586e62"></a>
   </p>
@@ -53,7 +53,7 @@
 
 **系统要求：Android 8.0（API 26）及以上，通用架构。**
 
-1. 前往 [Releases](https://github.com/oldjie/yisou/releases/latest) 下载最新公开预览版 APK。
+1. 前往 [Releases](https://github.com/oldjie/yisou/releases) 下载最新公开预览版 APK。
 2. 将 APK 复制到手机，通过系统文件管理器打开安装；系统可能要求允许该文件管理器安装应用。
 3. 打开一搜，输入关键词并选择目标平台，发起搜索。
 

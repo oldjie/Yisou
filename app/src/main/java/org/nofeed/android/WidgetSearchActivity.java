@@ -27,6 +27,11 @@ public class WidgetSearchActivity extends Activity {
     private Appearance.Palette colors;
     private boolean dark;
     private String appearanceMode;
+    private boolean submitting, leaving;
+    private final Runnable keyboardRequest = () -> {
+        if (query != null && !submitting && !leaving && !isFinishing() && !isDestroyed() && hasWindowFocus())
+            ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(query, InputMethodManager.SHOW_IMPLICIT);
+    };
 
     @Override protected void attachBaseContext(Context base) {
         super.attachBaseContext(Appearance.wrap(base));
@@ -67,7 +72,7 @@ public class WidgetSearchActivity extends Activity {
         TextView go = label("→", 25); go.setGravity(Gravity.CENTER); go.setContentDescription("提交快捷搜索"); go.setOnClickListener(v -> submit());
         field.addView(go, new LinearLayout.LayoutParams(dp(52), dp(56))); root.addView(field);
         setContentView(root); getWindow().setLayout(-1, -2);
-        query.requestFocus(); query.postDelayed(() -> ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(query, InputMethodManager.SHOW_IMPLICIT), 160);
+        query.requestFocus(); query.postDelayed(keyboardRequest, 160);
     }
 
     private int dp(int value) { return Math.round(value * getResources().getDisplayMetrics().density); }
@@ -89,11 +94,29 @@ public class WidgetSearchActivity extends Activity {
         }).show();
     }
     private void submit() {
+        if (submitting || leaving || isFinishing()) return;
         String value = query.getText().toString().trim();
         if (value.isEmpty()) { query.setError("先写下想搜索的内容"); return; }
         if (selected == null) { choose(true); return; }
+        // Keep the editor in place while resolving the destination. Hiding the
+        // IME first would resize this bottom window before a slow app appears.
+        submitting = true;
+        try { SearchLauncher.launch(this, store, selected, value, this::completeHandoff); }
+        finally { if (!leaving) submitting = false; }
+    }
+    private void completeHandoff() {
+        if (leaving || isFinishing()) return;
+        leaving = true;
+        query.removeCallbacks(keyboardRequest);
+        // A successful start does not mean the destination has drawn yet.
+        // Hide our own surface now instead of retaining a floating editor
+        // during the destination's cold start. Failed starts never get here.
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+                | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().getDecorView().setVisibility(View.INVISIBLE);
         ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(query.getWindowToken(), 0);
-        SearchLauncher.launch(this, store, selected, value, this::finish);
+        finish(); overridePendingTransition(0, 0);
     }
     @Override protected void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state); state.putString("draft", query.getText().toString());
@@ -106,7 +129,11 @@ public class WidgetSearchActivity extends Activity {
     }
     @Override public void onWindowFocusChanged(boolean focused) {
         super.onWindowFocusChanged(focused);
-        if (focused && query != null) query.post(() -> ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(query, InputMethodManager.SHOW_IMPLICIT));
+        if (focused && query != null && !submitting && !leaving) query.post(keyboardRequest);
+    }
+    @Override protected void onDestroy() {
+        if (query != null) query.removeCallbacks(keyboardRequest);
+        super.onDestroy();
     }
     @Override public void startActivity(Intent intent) {
         String owner = intent.getPackage();
@@ -117,7 +144,7 @@ public class WidgetSearchActivity extends Activity {
                 && ("https".equals(intent.getData().getScheme()) || "http".equals(intent.getData().getScheme()));
         // Start the destination in its own task before closing this small input
         // window. Permission settings keep this window/draft for the return.
-        if (target || web) { super.startActivity(new Intent(intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); finish(); }
+        if (target || web) { super.startActivity(new Intent(intent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); completeHandoff(); }
         else super.startActivity(intent);
     }
 }

@@ -35,7 +35,8 @@ final class LicenseInfo {
         String url = "https://github.com/oldjie/yisou";
         try {
             String version = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
-            if (version != null) url += "/releases/tag/v" + Uri.encode(version);
+            if (version != null && version.contains("-handoff.")) url += "/tree/codex/widget-douban-handoff";
+            else if (version != null) url += "/releases/tag/v" + Uri.encode(version);
         } catch (android.content.pm.PackageManager.NameNotFoundException ignored) { }
         try { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)).addCategory(Intent.CATEGORY_BROWSABLE)); }
         catch (RuntimeException unavailable) {

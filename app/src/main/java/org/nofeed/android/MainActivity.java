@@ -163,7 +163,9 @@ public class MainActivity extends Activity {
         });
         space(content, 18);
         choices = row();
-        choices.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob) -> { if (r-l != or-ol) renderChoices(); });
+        choices.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob) -> {
+            if (r-l != or-ol) resizeChoiceIcons();
+        });
         content.addView(choices, new LinearLayout.LayoutParams(-1, dp(88))); renderChoices(); updateButton();
         space(content, 80);
     }
@@ -185,6 +187,19 @@ public class MainActivity extends Activity {
             item.setOnClickListener(v -> { selected = t; renderChoices(); updateButton(); });
             item.setOnLongClickListener(v -> { chooseTargets(); return true; });
             choices.addView(item, new LinearLayout.LayoutParams(0, dp(84), 1));
+        }
+    }
+    private void resizeChoiceIcons() {
+        // Keep the measured children during layout. Replacing them here can
+        // leave the new row unmeasured until another window traversal on OEMs.
+        int itemWidth = choices.getWidth() / SearchTarget.values().length;
+        int size = Math.min(dp(44), Math.max(dp(24), itemWidth-dp(8)));
+        for (int i = 0; i < choices.getChildCount(); i++) {
+            View icon = ((LinearLayout)choices.getChildAt(i)).getChildAt(0);
+            ViewGroup.LayoutParams params = icon.getLayoutParams();
+            if (params.width != size || params.height != size) {
+                params.width = size; params.height = size; icon.setLayoutParams(params);
+            }
         }
     }
     private TextView appLabel(String value, int color) {

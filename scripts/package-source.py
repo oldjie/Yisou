@@ -4,7 +4,7 @@ import zipfile
 from release_files import collect
 
 root = Path(__file__).resolve().parents[1]
-output = root / 'dist' / 'yisou-0.8.3-personal.2-source.zip'
+output = root / 'dist' / 'yisou-0.8.3-personal.3-source.zip'
 output.parent.mkdir(exist_ok=True)
 files = collect()
 with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:

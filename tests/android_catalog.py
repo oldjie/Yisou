@@ -107,7 +107,12 @@ missing=next((n for n in labels if n not in installed),None)
 if missing is None:raise SystemExit('Requires at least one target absent to verify built-in missing-app artwork')
 fixture=False
 try:
-    adb('install','-r',str(a.apk.resolve()));open_home();open_picker();tap(text='恢复默认')
+    adb('install','-r',str(a.apk.resolve()))
+    for _ in range(3):
+        sh('am','force-stop','org.nofeed.android');open_home()
+        visible=[n for n in nodes() if n.get('content-desc','').endswith(('，点击选择','，已选择')) and bounds(n)[2]>bounds(n)[0] and bounds(n)[3]>bounds(n)[1]]
+        assert len(visible)==5, 'Fresh process launch must show all five buttons before any interaction'
+    open_picker();tap(text='恢复默认')
     assert menu_order()==expected
     capture('catalog-default.png');tap(text='完成');ns=nodes()
     assert not any(n.get('content-desc')=='更多应用' for n in ns)

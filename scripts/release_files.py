@@ -18,13 +18,7 @@ ROOT_FILES = (
     'app/src/main/res/drawable-nodpi/platform_taobao.png',
     'app/src/main/res/drawable-nodpi/platform_xianyu.png',
     'app/src/main/res/drawable-nodpi/platform_wechat.png',
-    'app/src/main/res/drawable-nodpi/platform_bilibili.png',
     'app/src/main/res/drawable-nodpi/platform_pinduoduo.png',
-    'app/src/main/res/drawable-nodpi/platform_xiaohongshu.png',
-    'app/src/main/res/drawable-nodpi/platform_meituan.png',
-    'app/src/main/res/drawable-nodpi/platform_ctrip.png',
-    'app/src/main/res/drawable-nodpi/platform_amap.png',
-    'app/src/main/res/drawable-nodpi/platform_taobao_shangou.png',
     'docs/PLATFORM_ICONS.md',
 
     'docs/settings-dark-yisou-0.7.0.png',

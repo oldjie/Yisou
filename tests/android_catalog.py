@@ -19,8 +19,8 @@ a=p.parse_args()
 if not a.disposable_emulator or not a.serial.startswith(('127.0.0.1:','emulator-')):
     raise SystemExit('Requires an explicitly disposable local emulator')
 root=Path(__file__).resolve().parents[1];host='org.nofeed.widgetfixture'
-labels=['豆瓣','淘宝','闲鱼','微信','哔哩哔哩','拼多多','小红书','美团','携程','高德地图','淘宝闪购']
-packages=['com.douban.frodo','com.taobao.taobao','com.taobao.idlefish','com.tencent.mm','tv.danmaku.bili','com.xunmeng.pinduoduo','com.xingin.xhs','com.sankuai.meituan','ctrip.android.view','com.autonavi.minimap','me.ele']
+labels=['豆瓣','淘宝','闲鱼','微信','拼多多']
+packages=['com.douban.frodo','com.taobao.taobao','com.taobao.idlefish','com.tencent.mm','com.xunmeng.pinduoduo']
 def adb(*v):return subprocess.check_output([a.adb,'-s',a.serial,*v],encoding='utf-8',errors='replace',timeout=60)
 def sh(*v):return adb('shell',shlex.join(v)).strip()
 def nodes():

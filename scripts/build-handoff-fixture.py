@@ -1,9 +1,9 @@
 """Build a test-only slow destination. This script never installs an APK.
 
-The stand-in deliberately uses com.sankuai.meituan so an unmodified production
-APK can exercise its normal Meituan dispatch path. Before any installation,
-confirm that `pm list packages com.sankuai.meituan` contains NO exact package on
-an explicitly disposable emulator. Refuse to proceed if real Meituan is present;
+The stand-in deliberately uses com.xunmeng.pinduoduo so an unmodified production
+APK can exercise its normal Pinduoduo dispatch path. Before any installation,
+confirm that `pm list packages com.xunmeng.pinduoduo` contains NO exact package on
+an explicitly disposable emulator. Refuse to proceed if real Pinduoduo is present;
 never replace it, never use install -r for this probe, and never uninstall an
 existing original application to make room. Remove only the probe installed by
 that test run. Do not publish this APK to a Release or distribute it to users.
@@ -84,4 +84,4 @@ run(jdk / 'java.exe', '-jar', tools / 'lib/apksigner.jar', 'sign', '--ks', key,
     '--out', out / 'handoff-probe.apk', out / 'aligned.apk')
 run(jdk / 'java.exe', '-jar', tools / 'lib/apksigner.jar', 'verify', out / 'handoff-probe.apk')
 print('TEST ONLY: ' + str(out / 'handoff-probe.apk'))
-print('No installation performed. Never replace real com.sankuai.meituan.')
+print('No installation performed. Never replace real com.xunmeng.pinduoduo.')

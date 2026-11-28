@@ -65,10 +65,10 @@ public final class LocalStoreProbeActivity extends Activity {
         history = store.history();
         check(prefs.getLong("count", 0) == 3 && history.length() == 200);
         entry(history.getJSONObject(199), SearchTarget.XIANYU, "fixture-seed-198", false);
-        store.record(SearchTarget.CTRIP, "fixture-over-cap", true);
+        store.record(SearchTarget.PINDUODUO, "fixture-over-cap", true);
         history = store.history();
         check(prefs.getLong("count", 0) == 4 && history.length() == 200);
-        entry(history.getJSONObject(0), SearchTarget.CTRIP, "fixture-over-cap", true);
+        entry(history.getJSONObject(0), SearchTarget.PINDUODUO, "fixture-over-cap", true);
         entry(history.getJSONObject(1), SearchTarget.DOUBAN, "fixture-at-cap", false);
         entry(history.getJSONObject(199), SearchTarget.XIANYU, "fixture-seed-197", false);
 

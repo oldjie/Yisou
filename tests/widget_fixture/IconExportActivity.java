@@ -19,8 +19,8 @@ public final class IconExportActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state); TextView result = new TextView(this); setContentView(result);
         try {
-            String[] packages = {"com.douban.frodo", "com.taobao.taobao", "com.taobao.idlefish", "com.tencent.mm", "tv.danmaku.bili", "com.xunmeng.pinduoduo", "com.xingin.xhs", "com.sankuai.meituan", "ctrip.android.view", "com.autonavi.minimap", "me.ele"};
-            String[] names = {"douban", "taobao", "xianyu", "wechat", "bilibili", "pinduoduo", "xiaohongshu", "meituan", "ctrip", "amap", "taobao_shangou"};
+            String[] packages = {"com.douban.frodo", "com.taobao.taobao", "com.taobao.idlefish", "com.tencent.mm", "com.xunmeng.pinduoduo"};
+            String[] names = {"douban", "taobao", "xianyu", "wechat", "pinduoduo"};
             java.util.Set<String> allowed = new java.util.HashSet<>(java.util.Arrays.asList(packages));
             java.util.Set<String> selected = new java.util.LinkedHashSet<>();
             String[] requested = getIntent().getStringArrayExtra("packages");

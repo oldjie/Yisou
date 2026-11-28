@@ -49,6 +49,9 @@ public final class WidgetPagingTest {
         WidgetPaging.State end = pages.at(pages.lastPage, false);
         check(end.backwards && pages.scrollTarget(end, false) == 10, "Arrival at the end still moves forward before the arrow reverses");
         check(new WidgetPaging(11, 800, true).lastPage == 0, "No paging needed when all apps fit");
+        WidgetPaging personal = new WidgetPaging(5, 300, true);
+        check(personal.lastPage == 1 && personal.next(0, false).position == 1,
+                "Five-app personal catalog exposes the clipped fifth icon on its final page");
         System.out.println("Widget paging tests passed (full-page stride, all apps fully reachable, reverse traversal, resize, legacy viewport).");
     }
 }

@@ -1,7 +1,7 @@
 """Capture widget handoff against a slow test destination on a disposable emulator.
 
 The stand-in uses an absent supported package so the production APK needs no
-test hook. Refuses to overwrite an existing Meituan or widget test host. Only
+test hook. Refuses to overwrite an existing Pinduoduo or widget test host. Only
 fixed synthetic text is submitted; probe logs contain no URI or query data.
 """
 import argparse
@@ -27,7 +27,7 @@ if not a.disposable_emulator or not a.serial.startswith(('127.0.0.1:','emulator-
     raise SystemExit('An explicitly disposable local emulator is required')
 root=Path(__file__).resolve().parents[1]
 out=root/'build/handoff-capture';out.mkdir(parents=True,exist_ok=True)
-host='org.nofeed.widgetfixture';target='com.sankuai.meituan'
+host='org.nofeed.widgetfixture';target='com.xunmeng.pinduoduo'
 
 def adb(*v):
     return subprocess.check_output([str(a.adb),'-s',a.serial,*map(str,v)],encoding='utf-8',errors='replace',timeout=60)
@@ -49,7 +49,7 @@ def tap(text=None,desc=None):tap_node(find(text,desc))
 def launch_host():
     sh('am','start','-W','-f','0x24000000','-n',host+'/fixture.MainActivity','--ei','widget_width','300')
     time.sleep(.6)
-def open_input(label='美团'):
+def open_input(label='拼多多'):
     launch_host()
     for _ in range(12):
         current=nodes()
@@ -93,7 +93,7 @@ def capture_trial(label,cold):
     assert not any(n.get('content-desc')=='快捷搜索关键词' for n in current),'Input window remained foreground'
     return {'label':label,'cold':cold,'before_query_bounds':bounds(next(n for n in before if n.get('content-desc')=='快捷搜索关键词'))}
 
-assert not installed(target),'Real Meituan is installed; refusing to replace it'
+assert not installed(target),'Real Pinduoduo is installed; refusing to replace it'
 assert not installed(host),'Existing widget host must not be overwritten'
 assert (root/'build/handoff-fixture/handoff-probe.apk').is_file()
 assert (root/'build/widget-fixture/fixture.apk').is_file()
@@ -117,9 +117,9 @@ try:
     # Failed native resolution must preserve the editor and allow another try.
     adb('uninstall',target);probe_added=False
     open_input();tap(desc='提交快捷搜索')
-    find(text='无法直达美团');tap(text='知道了')
+    find(text='无法直达拼多多');tap(text='知道了')
     find(text='HandoffProbe',desc='快捷搜索关键词')
-    tap(desc='提交快捷搜索');find(text='无法直达美团');tap(text='知道了')
+    tap(desc='提交快捷搜索');find(text='无法直达拼多多');tap(text='知道了')
     find(text='HandoffProbe',desc='快捷搜索关键词');tap(desc='关闭快捷搜索')
     print('PASS failed launches preserve the draft and release the submit guard',flush=True)
     if not installed('com.tencent.mm'):

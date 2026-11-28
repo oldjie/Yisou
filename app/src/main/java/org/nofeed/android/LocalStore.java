@@ -14,14 +14,17 @@ final class LocalStore {
     }
     void record(SearchTarget target, String query, boolean web) {
         try {
-            JSONArray previous = history(), next = new JSONArray();
-            next.put(new JSONObject().put("target", target.name()).put("query", query)
-                    .put("time", System.currentTimeMillis()).put("web", web));
-            for (int i = 0; i < Math.min(previous.length(), 199); i++) next.put(previous.get(i));
             SharedPreferences.Editor edit = prefs.edit().putLong("count", prefs.getLong("count", 0) + 1);
-            if (prefs.getBoolean("save_history", true)) edit.putString("history", next.toString());
+            if (prefs.getBoolean("save_history", true)) {
+                JSONArray previous = history(), next = new JSONArray();
+                next.put(new JSONObject().put("target", target.name()).put("query", query)
+                        .put("time", System.currentTimeMillis()).put("web", web));
+                for (int i = 0; i < Math.min(previous.length(), 199); i++) next.put(previous.get(i));
+                edit.putString("history", next.toString());
+            }
             edit.apply();
-            SearchWidget.refresh();
+            // Widgets display neither history nor count. Rebuilding all icons
+            // here would delay handoff and unnecessarily reset their page.
         } catch (Exception ignored) { /* A dispatch must not fail because local history is unavailable. */ }
     }
 }

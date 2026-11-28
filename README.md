@@ -64,6 +64,8 @@
 
 当前开发预览版：**0.8.2**。本地直接构建产物为 `dist/yisou-0.8.2.apk`。
 
+小组件交接优化已通过用户测试，尚未发布到 Releases。当前构建保留 **0.8.2-handoff.1 交接优化测试版**标识，工作分支为 `oldjie/widget-douban-handoff`。优化输入窗退场并减少无用重绘，豆瓣搜索链接保持原样；测试记录见 [TESTING.md](docs/TESTING.md)。本地测试包为 `dist/yisou-0.8.2-handoff.1.apk`，沿用原签名和版本代码，便于与0.8.2来回覆盖测试。
+
 桌面组件的更多使用说明见 [WIDGETS.md](docs/WIDGETS.md)。
 
 ## 版本更新

@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sankuai.meituan">
+    <!-- Test-only stand-in. Install only when this exact package is absent on
+         an explicitly disposable emulator. Never replace the real Meituan. -->
+    <application android:label="一搜慢启动测试探针" android:theme="@style/HandoffProbeTheme"
+        android:allowBackup="false" android:fullBackupContent="false">
+        <activity android:name="probe.SlowTargetActivity" android:exported="true" android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="imeituan" android:host="www.meituan.com" android:path="/search/result" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

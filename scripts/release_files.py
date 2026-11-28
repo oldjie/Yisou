@@ -3,7 +3,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_FILES = (
-    'README.md', 'LICENSE', 'LICENSING.md', 'PRIVACY.md', 'CONTRIBUTING.md', 'SECURITY.md',
+    'README.md', 'AGENTS.md', 'LICENSE', 'LICENSING.md', 'PRIVACY.md', 'CONTRIBUTING.md', 'SECURITY.md',
     'THIRD_PARTY_NOTICES.md', 'build.gradle', 'settings.gradle', 'gradle.properties',
     'app/build.gradle', 'gradlew', 'gradlew.bat', '.gitignore', '.gitattributes',
     'gradle/wrapper/gradle-wrapper.properties', 'gradle/wrapper/gradle-wrapper.jar',

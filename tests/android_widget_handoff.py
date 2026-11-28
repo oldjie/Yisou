@@ -51,14 +51,10 @@ def launch_host():
     time.sleep(.6)
 def open_input(label='拼多多'):
     launch_host()
-    for _ in range(12):
-        current=nodes()
-        item=next((n for n in current if n.get('content-desc')==label+'，输入并搜索' and bounds(n)[2]-bounds(n)[0]>50),None)
-        if item is not None:
-            tap_node(item);break
-        arrow=next(n for n in current if n.get('resource-id')=='org.nofeed.android:id/widget_next')
-        tap_node(arrow)
-    else:raise AssertionError('Cannot reach test destination through the real widget')
+    current=nodes()
+    items=[n for n in current if n.get('content-desc','').endswith('，输入并搜索')]
+    assert len(items)==5, 'All five targets must be visible without paging'
+    tap_node(next(n for n in items if n.get('content-desc')==label+'，输入并搜索'))
     find(text=label+' ▾');find(desc='快捷搜索关键词')
     sh('input','text','HandoffProbe')
     find(text='HandoffProbe',desc='快捷搜索关键词')

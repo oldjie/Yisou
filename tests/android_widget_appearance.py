@@ -20,7 +20,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 HOST = 'org.nofeed.widgetfixture'
 LABELS = {'system': '跟随系统', 'light': '浅色', 'dark': '深色'}
-TARGET_LABELS = {'豆瓣', '淘宝', '闲鱼', '微信', '哔哩哔哩', '拼多多', '小红书', '美团', '携程', '高德地图', '淘宝闪购'}
+TARGET_LABELS = {'豆瓣', '淘宝', '闲鱼', '微信', '拼多多'}
 SURFACE = {False: (255, 255, 255), True: (32, 37, 31)}
 FIELD = {False: (243, 245, 241), True: (39, 45, 38)}
 
@@ -88,7 +88,10 @@ class Regression:
             if page == previous: return
             previous = page; self.scroll_order(False,current)
     def order(self):
-        self.main(); self.tap(desc='更多应用'); self.order_top()
+        self.main()
+        n = next(n for n in self.nodes() if n.get('content-desc','').endswith(('，点击选择','，已选择')))
+        a,b,c,d = self.bounds(n); self.sh('input','swipe',(a+c)//2,(b+d)//2,(a+c)//2,(b+d)//2,900)
+        time.sleep(.4); self.order_top()
         result = []; previous = None
         for _ in TARGET_LABELS:
             current = self.nodes(); page = self.order_page(current)
@@ -133,7 +136,8 @@ class Regression:
                 colorful = sum(max(p)-min(p)>55 and max(p)>115 for p in crop.getdata())
                 assert colorful > crop.width*crop.height*.03, 'Brand icons must keep their original colors'
                 apps = [n for n in ns if n.get('content-desc', '').endswith('，输入并搜索') and self.bounds(n)[2] > self.bounds(n)[0]]
-                assert apps
+                assert len(apps)==5
+                assert not any(n.get('resource-id','').endswith('/widget_next') for n in ns)
                 print('PASS widget '+name+' surface='+str(surface)+' field='+str(field), flush=True)
                 return apps[0].get('content-desc').split('，', 1)[0]
             time.sleep(.6)
@@ -211,7 +215,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--adb',type=Path,default=ROOT/'.tools/sdk/platform-tools/adb.exe')
     parser.add_argument('--serial',default='127.0.0.1:16384')
-    parser.add_argument('--apk',type=Path,default=ROOT/'dist/yisou-0.8.3-personal.1.apk')
+    parser.add_argument('--apk',type=Path,default=ROOT/'dist/yisou-0.8.3-personal.2.apk')
     parser.add_argument('--disposable-emulator',action='store_true')
     parser.add_argument('--run',action='store_true')
     args=parser.parse_args()

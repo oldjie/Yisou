@@ -29,7 +29,6 @@ public class MainActivity extends Activity {
     private LocalStore store;
     private Typeface uiFont;
     private LinearLayout root, content, choices;
-    private HorizontalScrollView appScroller;
     private EditText query;
     private TextView searchButton, count;
     private SearchTarget selected;
@@ -163,17 +162,16 @@ public class MainActivity extends Activity {
             return false;
         });
         space(content, 18);
-        LinearLayout appRow = row(); appScroller = new HorizontalScrollView(this); appScroller.setHorizontalScrollBarEnabled(false); appScroller.setHorizontalFadingEdgeEnabled(false);
-        appScroller.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob) -> { if (r-l != or-ol) renderChoices(); });
-        choices = row(); appScroller.addView(choices); appRow.addView(appScroller, new LinearLayout.LayoutParams(0, dp(88), 1));
-        appRow.addView(moreChoice(), new LinearLayout.LayoutParams(dp(54), dp(84))); content.addView(appRow); renderChoices(); updateButton();
+        choices = row();
+        choices.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob) -> { if (r-l != or-ol) renderChoices(); });
+        content.addView(choices, new LinearLayout.LayoutParams(-1, dp(88))); renderChoices(); updateButton();
         space(content, 80);
     }
 
     private void renderChoices() {
         choices.removeAllViews();
-        int available = appScroller.getWidth() > 0 ? appScroller.getWidth() : getResources().getDisplayMetrics().widthPixels - dp(106);
-        int itemWidth = Math.max(1, (int)(available / 4.5f));
+        int available = choices.getWidth() > 0 ? choices.getWidth() : getResources().getDisplayMetrics().widthPixels - dp(52);
+        int itemWidth = Math.max(1, (int)(available / (float)SearchTarget.values().length));
         for (SearchTarget t : AppCatalog.ordered(this)) {
             LinearLayout item = column(); item.setGravity(Gravity.CENTER); item.setPadding(dp(2), dp(6), dp(2), dp(6));
             boolean installed = AppCatalog.installed(this, t);
@@ -185,16 +183,9 @@ public class MainActivity extends Activity {
             if (selected == t) item.setBackground(background(colors.selected, 14, 0));
             item.setContentDescription(t.label + (selected == t ? "，已选择" : "，点击选择")); item.setSelected(selected == t); item.setFocusable(true);
             item.setOnClickListener(v -> { selected = t; renderChoices(); updateButton(); });
-            choices.addView(item, new LinearLayout.LayoutParams(itemWidth, dp(84)));
+            item.setOnLongClickListener(v -> { chooseTargets(); return true; });
+            choices.addView(item, new LinearLayout.LayoutParams(0, dp(84), 1));
         }
-    }
-    private View moreChoice() {
-        LinearLayout more = column(); more.setGravity(Gravity.CENTER);
-        AppIconView dots = new AppIconView(this, getDrawable(R.drawable.ic_more_apps));
-        more.addView(dots, new LinearLayout.LayoutParams(dp(44), dp(44))); more.setTooltipText("更多应用");
-        space(more, 7); more.addView(appLabel("更多", muted));
-        more.setContentDescription("更多应用"); more.setFocusable(true); more.setOnClickListener(v -> moreTargets());
-        return more;
     }
     private TextView appLabel(String value, int color) {
         TextView label = text(value, 12, color);
@@ -208,19 +199,14 @@ public class MainActivity extends Activity {
     private void submit() {
         String value = query.getText().toString().trim();
         if (value.isEmpty()) { query.setError("先写下想搜索的内容"); query.requestFocus(); return; }
-        if (selected == null) { moreTargets(); return; }
+        if (selected == null) { chooseTargets(); return; }
         ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(query.getWindowToken(), 0);
         SearchLauncher.launch(this, store, selected, value, this::updateCount);
     }
-    private void moreTargets() {
+    private void chooseTargets() {
         AppPickerDialog.show(this, selected, target -> {
             selected = target; renderChoices(); updateButton();
-            appScroller.post(() -> {
-                int index = AppCatalog.ordered(this).indexOf(selected);
-                int width = choices.getChildCount() == 0 ? 0 : choices.getChildAt(0).getWidth();
-                appScroller.smoothScrollTo(Math.max(0, index*width-appScroller.getWidth()/2+width/2), 0);
-            });
-        }, () -> { renderChoices(); appScroller.scrollTo(0,0); });
+        }, this::renderChoices);
     }
 
     private LinearLayout page(String name) {

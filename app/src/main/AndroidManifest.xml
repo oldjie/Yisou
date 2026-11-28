@@ -26,7 +26,6 @@
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/search_widget" />
         </receiver>
-        <service android:name=".WidgetAppsService" android:exported="false" android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service android:name=".WechatSearchService" android:label="@string/wechat_service_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true">
             <intent-filter><action android:name="android.accessibilityservice.AccessibilityService" /></intent-filter>
